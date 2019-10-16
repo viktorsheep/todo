@@ -12,7 +12,6 @@ import axios from 'axios';
 window.Vue = require('vue');
 window.axios = axios;
 
-
 import ElementUI from 'element-ui';
 import 'moment';
 // require('element-ui/lib/theme-chalk/index.css');
