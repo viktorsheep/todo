@@ -177,7 +177,7 @@
                             Notification.info({
                                 title : 'Task Reminder',
                                 message: 'You have a due task! ' + ut.body + 'is due ' + moment(ut.deadline).tz('Asia/Yangon').format('DD MMM YY hh:mm A') + '.',
-                                duration: 30
+                                duration: 0
                             });
                         }
                     }
