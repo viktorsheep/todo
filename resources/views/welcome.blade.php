@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> <!-- Font Awesome -->
 
         <!-- Styles -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ asset('/public/css/app.css') }}" rel="stylesheet">
         
     </head>
     <body>
@@ -23,6 +23,6 @@
         </div>
 
         <!-- Scripts -->
-        <script src="{{ asset('/js/app.js')  }}"></script>
+        <script src="{{ asset('/public/js/app.js')  }}"></script>
     </body>
 </html>
