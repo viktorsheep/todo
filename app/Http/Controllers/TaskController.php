@@ -23,20 +23,24 @@ class TaskController extends Controller
     }
 
     public function store(Request $request) {
+        // dd(Carbon::parse(request('deadline'))->toDateTimeString());
+        // dd(Carbon::parse(request('deadline'))->setTimeZone('Asia/Yangon')->toDateTimeString());
+
         $this->validate($request, [
             'body'=>'required|max:500'
         ]);
 
         return Task::create([
             'body' => request('body'),
-            'deadline' => Carbon::parse(request('deadline'))
+            'deadline' => Carbon::parse(request('deadline'))->setTimeZone('Asia/Yangon')->toDateTimeString()
         ]);
+        
     }
 
     public function edit(Request $request) {
         $this->validate($request, [
             'body'=>'required|max:500',
-            'deadline' => Carbon::parse(request('deadline'))
+            'deadline' => Carbon::parse(request('deadline'))->setTimeZone('Asia/Yangon')->toDateTimeString()
         ]);
 
         $task = Task::findOrFail($request->id);
@@ -46,7 +50,14 @@ class TaskController extends Controller
 
     public function archive($id) {
         $task = Task::findOrFail($id);
-        $task->archive = ! $task->archive;
+
+        if($task->archive == 1) {
+            $task->archive = 0;
+        }
+        else {
+            $task->archive = 1;
+        }
+        
         $task->save();
     }
 

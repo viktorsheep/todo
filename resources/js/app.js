@@ -1,37 +1,83 @@
 require('./bootstrap');
 
-// import 'es6-promise/auto';
 import axios from 'axios';
-// import VueAuth from '@websanova/vue-auth';
-// import VueAxios from 'vue-axios';
-// import VueRouter from 'vue-router';
-// import auth from './auth'
-// import router from './router'
-
-
-window.Vue = require('vue');
+import Vue from 'vue';
+window.Vue = require('vue'); // temp comment : to delete
 window.axios = axios;
+
+import VueRouter from 'vue-router';
+import Vuex from 'vuex';
+import Vuelidate from 'vuelidate';
+
+import {routes} from './routes.js';
+import storeData from './store.js';
+import MainApp from './components/MainApp.vue';
 
 import ElementUI from 'element-ui';
 import 'moment';
-// require('element-ui/lib/theme-chalk/index.css');
-import 'element-ui/lib/theme-chalk/index.css';
+
+// element ui css fixture
+import 'element-ui/lib/theme-chalk/index.css'; 
 import 'element-ui/lib/theme-chalk/reset.css';
 import locale from 'element-ui/lib/locale/lang/en';
 
-// Vue.router = router;
-// Vue.use(VueRouter);
-// Vue.use(VueAxios, axios);
-// axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api/v1`;
-// Vue.use(VueAuth, auth);
-
-
-Vue.use(ElementUI, {locale});
-
+// OLD CODE : to delete later
+// setting components : 
+// v todo : to change to routes.js 
 Vue.component('task-list', require('./components/Task-list.vue').default);
 Vue.component('login', require('./pages/Login.vue').default);
 
+// -----
+
+Vue.use(ElementUI, {locale}); // using element ui
+Vue.use(Vuelidate);
+Vue.use(VueRouter);
+Vue.use(Vuex);
+
+// config : router
+const router = new VueRouter({
+    mode : 'history',
+    base: process.env.BASE_URL,
+    routes,
+});
+
+router.beforeEach((to, from, next) => {
+    if(to.fullPath === '/dashboard') {
+        if (!store.state.currentUser) {
+            next('/');
+        }
+    }
+
+    else if(to.fullPath === '/login') {
+        if (store.state.currentUser) {
+            next('/dashboard');
+        }
+    }
+
+    else if(to.fullPath === '/register') {
+        if (store.state.currentUser) {
+            next('/dashboard');
+        }
+    }
+
+    else if(to.fullPath === '/') {
+        if (store.state.currentUser) {
+            next('/dashboard');
+        }
+    }
+
+    next();
+});
+
+const store = new Vuex.Store(storeData);
+
 const app = new Vue({
     el : '#app',
-    // router
+    router,
+    store,
+    // render : h => h(MainApp),
+    template : '<main-App/>',
+    components : {
+	    MainApp
+    },
 });

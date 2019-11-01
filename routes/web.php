@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('main');
+    return view('welcome');
 });
 
 Route::get('current_tasks', 'TaskController@index');
@@ -24,22 +24,10 @@ Route::post('archive_task/{id}', 'TaskController@archive');
 Route::post('edit_task', 'TaskController@edit');
 Route::post('login', 'AuthController@login');
 
-Route::prefix('v1')->group(function () {
-    Route::prefix('auth')->group(function () {
-        Route::post('register', 'AuthController@register');
-        Route::post('login', 'AuthController@login');
-        Route::get('refresh', 'AuthController@refresh');
+Route::get('{any}', function () {
+    return view('welcome');
+})->where('any','.*');
 
-        
-        // Below mention routes are available only for the authenticated users.
-        Route::middleware('auth:api')->group(function () {
-            // Get user info
-            Route::get('user', 'AuthController@user');
-            // Logout user from application
-            Route::post('logout', 'AuthController@logout');
-        });
-    });
-});
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
